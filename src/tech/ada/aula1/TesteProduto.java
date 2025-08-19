@@ -17,6 +17,11 @@ public class TesteProduto {
                 "Geladeira", 4000
         );
 
+
+        MetodoPagamento meioDePagamento = new MetodoPagamentoTransferencia();
+        Loja.vender(produto, meioDePagamento);
+
+
         List<Produto> produtos = new ArrayList<>();
         produtos.add(produto);
         produtos.add(produto3);
@@ -25,7 +30,7 @@ public class TesteProduto {
 
         Collections.sort(produtos);
 
-        for(Produto produtoLista: produtos) {
+        for (Produto produtoLista : produtos) {
             System.out.println(produtoLista.getPreco());
         }
 
@@ -40,10 +45,6 @@ public class TesteProduto {
         Caixa<Integer> caixa = new Caixa<>();
         caixa.item = 1;
 
-
-//        MetodoPagamento meioDePagamento = new MetodoPagamentoTransferencia();
-//
-//        Loja.vender(produto, meioDePagamento);
 
     }
 
