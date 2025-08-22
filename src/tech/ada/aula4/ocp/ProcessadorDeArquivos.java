@@ -5,30 +5,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProcessadorDeArquivos {
 
-    public List<Cliente> processar(String caminhoArquivo) throws IOException {
-        List<Cliente> produtos = new ArrayList<>();
-        String tipoArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf(".") + 1);
+    private final Map<String, LeitorArquivo> leitores;
 
-        if (tipoArquivo.equalsIgnoreCase("csv")) {
-            System.out.println("Lendo arquivo CSV...");
-            try (BufferedReader reader = new BufferedReader(new FileReader(caminhoArquivo))) {
-                String linha;
-                while ((linha = reader.readLine()) != null) {
-                    String[] campos = linha.split(",");
-                    String nome = campos[0];
-                    int idade = Integer.parseInt(campos[1]);
-                    produtos.add(new Cliente(nome, idade));
-                }
-            }
+    public ProcessadorDeArquivos(Map<String, LeitorArquivo> leitores) {
+        this.leitores = leitores;
+    }
+
+    public List<Cliente> processar(String caminhoArquivo) throws IOException {
+        String tipoArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf(".") + 1);
+        LeitorArquivo leitorArquivo = leitores.get(tipoArquivo);
+        if (leitorArquivo != null) {
+            return leitorArquivo.processar(caminhoArquivo);
         }
         else {
             throw new IllegalArgumentException("Tipo de arquivo não suportado: " + tipoArquivo);
         }
-
-        return produtos;
-
     }
 }
